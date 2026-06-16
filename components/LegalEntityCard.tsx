@@ -12,9 +12,10 @@ const EU_STATE_NAMES: Record<string, string> = {
 interface Props {
   entity: LegalEntity;
   onEdit: () => void;
+  isLocked?: boolean;
 }
 
-export default function LegalEntityCard({ entity, onEdit }: Props) {
+export default function LegalEntityCard({ entity, onEdit, isLocked = false }: Props) {
   const vatLine =
     entity.vatEnabled && entity.memberStateCode
       ? [
@@ -31,16 +32,7 @@ export default function LegalEntityCard({ entity, onEdit }: Props) {
   const addressLine = addressParts.join(", ");
 
   return (
-    <div
-      style={{
-        backgroundColor: "white",
-        borderRadius: "16px",
-        padding: "16px 20px",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06)",
-        width: "440px",
-        maxWidth: "100%",
-      }}
-    >
+    <div style={{ width: "100%" }}>
       <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
         <span style={{ fontSize: "22px", flexShrink: 0, marginTop: "1px" }}>🏢</span>
         <div style={{ flex: 1, minWidth: 0 }}>

@@ -3,6 +3,7 @@
 import { useState, useRef, CSSProperties } from "react";
 import { LegalEntity } from "@/types/legalEntity";
 import VatInput from "./VatInput";
+import { validateVat } from "@/lib/validateVat";
 
 const EU_MEMBER_STATES = [
   { code: "AT", name: "Austria" },
@@ -55,9 +56,10 @@ interface Props {
   initialData: LegalEntity | null;
   onSave: (data: LegalEntity) => void;
   onCancel: () => void;
+  isLocked?: boolean;
 }
 
-export default function LegalEntityForm({ initialData, onSave, onCancel }: Props) {
+export default function LegalEntityForm({ initialData, onSave, onCancel, isLocked = false }: Props) {
   const [legalName, setLegalName] = useState(initialData?.legalName ?? "");
   const [registrationNumber, setRegistrationNumber] = useState(initialData?.registrationNumber ?? "");
   const [vatEnabled, setVatEnabled] = useState(initialData?.vatEnabled ?? false);
@@ -89,6 +91,7 @@ export default function LegalEntityForm({ initialData, onSave, onCancel }: Props
     if (!street.trim()) newErrors.street = true;
     if (!city.trim()) newErrors.city = true;
     if (!postalCode.trim()) newErrors.postalCode = true;
+    if (vatEnabled && !validateVat(memberStateCode, vatNumber)) newErrors.vatNumber = true;
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -184,6 +187,10 @@ export default function LegalEntityForm({ initialData, onSave, onCancel }: Props
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       {/* Scrollable body */}
+      <fieldset
+        disabled={isLocked}
+        style={{ border: "none", padding: 0, margin: 0, flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", opacity: isLocked ? 0.65 : 1 }}
+      >
       <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
 
         {/* ── Company ── */}
@@ -317,10 +324,13 @@ export default function LegalEntityForm({ initialData, onSave, onCancel }: Props
                     <VatInput
                       memberStateCode={memberStateCode}
                       value={vatNumber}
-                      onChange={setVatNumber}
+                      onChange={(v) => { setVatNumber(v); setErrors((p) => ({ ...p, vatNumber: false })); }}
                       onUseName={handleUseName}
                       legalName={legalName}
                     />
+                    {errors.vatNumber && (
+                      <div style={errorMsg}>Enter a valid VAT number to save</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -442,6 +452,7 @@ export default function LegalEntityForm({ initialData, onSave, onCancel }: Props
           </div>
         </section>
       </div>
+      </fieldset>
 
       {/* Footer */}
       <div
@@ -453,56 +464,77 @@ export default function LegalEntityForm({ initialData, onSave, onCancel }: Props
           flexShrink: 0,
         }}
       >
-        <button
-          type="button"
-          onClick={onCancel}
-          style={{
-            flex: 1,
-            height: "42px",
-            borderRadius: "10px",
-            border: "1px solid #E8E8E8",
-            backgroundColor: "white",
-            color: "#777",
-            fontSize: "13.5px",
-            fontWeight: 500,
-            cursor: "pointer",
-            transition: "border-color 150ms, color 150ms",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = "#CCC";
-            e.currentTarget.style.color = "#333";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = "#E8E8E8";
-            e.currentTarget.style.color = "#777";
-          }}
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          onClick={handleSave}
-          style={{
-            flex: 2,
-            height: "42px",
-            borderRadius: "10px",
-            border: "none",
-            backgroundColor: "#FF622B",
-            color: "white",
-            fontSize: "13.5px",
-            fontWeight: 500,
-            cursor: "pointer",
-            transition: "background-color 150ms",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#E5551F";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#FF622B";
-          }}
-        >
-          Save Entity
-        </button>
+        {isLocked ? (
+          <button
+            type="button"
+            onClick={onCancel}
+            style={{
+              flex: 1,
+              height: "42px",
+              borderRadius: "10px",
+              border: "none",
+              backgroundColor: "#111",
+              color: "white",
+              fontSize: "13.5px",
+              fontWeight: 500,
+              cursor: "pointer",
+              transition: "background-color 150ms",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#2A2A2A"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#111"; }}
+          >
+            Close
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={onCancel}
+              style={{
+                flex: 1,
+                height: "42px",
+                borderRadius: "10px",
+                border: "1px solid #E8E8E8",
+                backgroundColor: "white",
+                color: "#777",
+                fontSize: "13.5px",
+                fontWeight: 500,
+                cursor: "pointer",
+                transition: "border-color 150ms, color 150ms",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#CCC";
+                e.currentTarget.style.color = "#333";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#E8E8E8";
+                e.currentTarget.style.color = "#777";
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              style={{
+                flex: 2,
+                height: "42px",
+                borderRadius: "10px",
+                border: "none",
+                backgroundColor: "#FF622B",
+                color: "white",
+                fontSize: "13.5px",
+                fontWeight: 500,
+                cursor: "pointer",
+                transition: "background-color 150ms",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#E5551F"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#FF622B"; }}
+            >
+              Save Entity
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

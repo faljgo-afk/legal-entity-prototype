@@ -9,9 +9,10 @@ interface Props {
   onClose: () => void;
   onSave: (data: LegalEntity) => void;
   initialData: LegalEntity | null;
+  isLocked: boolean;
 }
 
-export default function LegalEntitySidebar({ open, onClose, onSave, initialData }: Props) {
+export default function LegalEntitySidebar({ open, onClose, onSave, initialData, isLocked }: Props) {
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -42,15 +43,13 @@ export default function LegalEntitySidebar({ open, onClose, onSave, initialData 
           top: 0,
           right: 0,
           zIndex: 50,
-          width: "400px",
+          width: "min(600px, 46vw)",
           height: "100%",
           backgroundColor: "white",
           display: "flex",
           flexDirection: "column",
           transform: open ? "translateX(0)" : "translateX(100%)",
-          transition: open
-            ? "transform 250ms ease-out"
-            : "transform 200ms ease-in",
+          transition: open ? "transform 250ms ease-out" : "transform 200ms ease-in",
           boxShadow: "-4px 0 32px rgba(0,0,0,0.12)",
         }}
       >
@@ -84,16 +83,34 @@ export default function LegalEntitySidebar({ open, onClose, onSave, initialData 
               justifyContent: "center",
               transition: "background-color 150ms",
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#F5F5F5";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "transparent";
-            }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#F5F5F5"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
           >
             ✕
           </button>
         </div>
+
+        {/* Locked disclaimer */}
+        {isLocked && (
+          <div
+            style={{
+              flexShrink: 0,
+              margin: "16px 20px 0",
+              backgroundColor: "#FFF7ED",
+              border: "1px solid #FED7AA",
+              borderRadius: "10px",
+              padding: "12px 14px",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "10px",
+            }}
+          >
+            <span style={{ fontSize: "16px", flexShrink: 0 }}>🔒</span>
+            <p style={{ fontSize: "12.5px", color: "#92400E", margin: 0, lineHeight: "1.5" }}>
+              This entity is linked to orders and cannot be edited. Register a new account or contact support.
+            </p>
+          </div>
+        )}
 
         {/* Form takes the remaining height */}
         <div style={{ flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
@@ -102,6 +119,7 @@ export default function LegalEntitySidebar({ open, onClose, onSave, initialData 
             initialData={initialData}
             onSave={onSave}
             onCancel={onClose}
+            isLocked={isLocked}
           />
         </div>
       </div>
