@@ -140,8 +140,8 @@ export default function LegalEntityForm({ initialData, onSave, onCancel }: Props
   const selectError: CSSProperties = { ...selectBase, borderColor: "#DC2626" };
 
   const onFocus = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
-    e.target.style.borderColor = "#111";
-    e.target.style.boxShadow = "0 0 0 3px rgba(17,17,17,0.05)";
+    e.target.style.borderColor = "#FF622B";
+    e.target.style.boxShadow = "0 0 0 3px rgba(255,98,43,0.12)";
   };
 
   const onBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -266,7 +266,7 @@ export default function LegalEntityForm({ initialData, onSave, onCancel }: Props
                   width: "36px",
                   height: "20px",
                   borderRadius: "10px",
-                  backgroundColor: vatEnabled ? "#111" : "#E0E0E0",
+                  backgroundColor: vatEnabled ? "#FF622B" : "#E0E0E0",
                   border: "none",
                   cursor: "pointer",
                   position: "relative",
@@ -487,7 +487,7 @@ export default function LegalEntityForm({ initialData, onSave, onCancel }: Props
             height: "42px",
             borderRadius: "10px",
             border: "none",
-            backgroundColor: "#111",
+            backgroundColor: "#FF622B",
             color: "white",
             fontSize: "13.5px",
             fontWeight: 500,
@@ -495,10 +495,10 @@ export default function LegalEntityForm({ initialData, onSave, onCancel }: Props
             transition: "background-color 150ms",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#2A2A2A";
+            e.currentTarget.style.backgroundColor = "#E5551F";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#111";
+            e.currentTarget.style.backgroundColor = "#FF622B";
           }}
         >
           Save Entity

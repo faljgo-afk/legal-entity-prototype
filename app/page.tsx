@@ -26,7 +26,7 @@ export default function Home() {
             padding: "0 20px",
             borderRadius: "10px",
             border: "none",
-            backgroundColor: "#111",
+            backgroundColor: "#FF622B",
             color: "white",
             fontSize: "13.5px",
             fontWeight: 500,
@@ -34,10 +34,10 @@ export default function Home() {
             transition: "background-color 150ms",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#2A2A2A";
+            e.currentTarget.style.backgroundColor = "#E5551F";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#111";
+            e.currentTarget.style.backgroundColor = "#FF622B";
           }}
         >
           Add Legal Entity
