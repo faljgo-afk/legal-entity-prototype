@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, CSSProperties } from "react";
+import { useState, useRef, useImperativeHandle, forwardRef, CSSProperties } from "react";
 import { LegalEntity } from "@/types/legalEntity";
 import VatInput from "./VatInput";
 import { validateVat } from "@/lib/validateVat";
@@ -59,7 +59,26 @@ interface Props {
   isLocked?: boolean;
 }
 
-export default function LegalEntityForm({ initialData, onSave, onCancel, isLocked = false }: Props) {
+export interface LegalEntityFormHandle {
+  fillTestData: () => void;
+}
+
+const TEST_DATA = {
+  legalName: "SWAG42 s.r.o.",
+  registrationNumber: "12345678",
+  vatEnabled: true,
+  memberStateCode: "CZ",
+  vatNumber: "CZ87654321",
+  otherTaxNumber: "",
+  country: "Czechia",
+  street: "Václavské náměstí 1",
+  city: "Prague",
+  postalCode: "110 00",
+  region: "",
+};
+
+const LegalEntityForm = forwardRef<LegalEntityFormHandle, Props>(
+  function LegalEntityForm({ initialData, onSave, onCancel, isLocked = false }, ref) {
   const [legalName, setLegalName] = useState(initialData?.legalName ?? "");
   const [registrationNumber, setRegistrationNumber] = useState(initialData?.registrationNumber ?? "");
   const [vatEnabled, setVatEnabled] = useState(initialData?.vatEnabled ?? false);
@@ -73,6 +92,23 @@ export default function LegalEntityForm({ initialData, onSave, onCancel, isLocke
   const [region, setRegion] = useState(initialData?.region ?? "");
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [legalNameFlash, setLegalNameFlash] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    fillTestData() {
+      setLegalName(TEST_DATA.legalName);
+      setRegistrationNumber(TEST_DATA.registrationNumber);
+      setVatEnabled(TEST_DATA.vatEnabled);
+      setMemberStateCode(TEST_DATA.memberStateCode);
+      setVatNumber(TEST_DATA.vatNumber);
+      setOtherTaxNumber(TEST_DATA.otherTaxNumber);
+      setCountry(TEST_DATA.country);
+      setStreet(TEST_DATA.street);
+      setCity(TEST_DATA.city);
+      setPostalCode(TEST_DATA.postalCode);
+      setRegion(TEST_DATA.region);
+      setErrors({});
+    },
+  }));
 
   const legalNameRef = useRef<HTMLInputElement>(null);
 
@@ -538,4 +574,6 @@ export default function LegalEntityForm({ initialData, onSave, onCancel, isLocke
       </div>
     </div>
   );
-}
+});
+
+export default LegalEntityForm;

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import LegalEntityForm from "./LegalEntityForm";
+import { useEffect, useRef } from "react";
+import LegalEntityForm, { LegalEntityFormHandle } from "./LegalEntityForm";
 import { LegalEntity } from "@/types/legalEntity";
 
 interface Props {
@@ -13,6 +13,8 @@ interface Props {
 }
 
 export default function LegalEntitySidebar({ open, onClose, onSave, initialData, isLocked }: Props) {
+  const formRef = useRef<LegalEntityFormHandle>(null);
+
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -67,27 +69,58 @@ export default function LegalEntitySidebar({ open, onClose, onSave, initialData,
           <span style={{ fontSize: "15px", fontWeight: 600, color: "#111" }}>
             Legal Entity
           </span>
-          <button
-            onClick={onClose}
-            style={{
-              width: "28px",
-              height: "28px",
-              borderRadius: "50%",
-              border: "none",
-              backgroundColor: "transparent",
-              cursor: "pointer",
-              color: "#999",
-              fontSize: "16px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "background-color 150ms",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#F5F5F5"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
-          >
-            ✕
-          </button>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            {!isLocked && (
+              <button
+                onClick={() => formRef.current?.fillTestData()}
+                style={{
+                  height: "28px",
+                  padding: "0 10px",
+                  borderRadius: "7px",
+                  border: "1px solid #E8E8E8",
+                  backgroundColor: "white",
+                  color: "#888",
+                  fontSize: "11.5px",
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  transition: "border-color 150ms, color 150ms",
+                  whiteSpace: "nowrap",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "#CCC";
+                  e.currentTarget.style.color = "#333";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "#E8E8E8";
+                  e.currentTarget.style.color = "#888";
+                }}
+              >
+                Fill with test data
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              style={{
+                width: "28px",
+                height: "28px",
+                borderRadius: "50%",
+                border: "none",
+                backgroundColor: "transparent",
+                cursor: "pointer",
+                color: "#999",
+                fontSize: "16px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "background-color 150ms",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#F5F5F5"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Locked disclaimer */}
@@ -116,6 +149,7 @@ export default function LegalEntitySidebar({ open, onClose, onSave, initialData,
         <div style={{ flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
           <LegalEntityForm
             key={open ? "open" : "closed"}
+            ref={formRef}
             initialData={initialData}
             onSave={onSave}
             onCancel={onClose}
