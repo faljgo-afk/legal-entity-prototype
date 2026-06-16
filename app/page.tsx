@@ -52,57 +52,56 @@ export default function Home() {
           )}
         </div>
 
-        {entity && (
-          <div style={{ marginTop: "12px", display: "flex", justifyContent: "flex-end" }}>
-            <button
-              onClick={() => setIsLocked((v) => !v)}
-              style={{
-                height: "34px",
-                padding: "0 14px",
-                borderRadius: "8px",
-                border: `1px solid ${isLocked ? "#FECACA" : "#E8E8E8"}`,
-                backgroundColor: isLocked ? "#FEF2F2" : "white",
-                color: isLocked ? "#DC2626" : "#777",
-                fontSize: "12px",
-                fontWeight: 500,
-                cursor: "pointer",
-                transition: "all 150ms",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = isLocked ? "#FCA5A5" : "#CCC";
-                e.currentTarget.style.color = isLocked ? "#B91C1C" : "#333";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = isLocked ? "#FECACA" : "#E8E8E8";
-                e.currentTarget.style.color = isLocked ? "#DC2626" : "#777";
-              }}
-            >
-              <span>{isLocked ? "🔒" : "🔓"}</span>
-              {isLocked ? "Unlock Entity" : "Lock Entity"}
-            </button>
-          </div>
-        )}
       </div>
 
-      <div style={{ textAlign: "center", paddingBottom: "8px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", paddingBottom: "8px" }}>
+        {entity && (
+          <button
+            onClick={() => setIsLocked((v) => !v)}
+            style={{
+              height: "36px",
+              padding: "0 14px",
+              borderRadius: "8px",
+              border: `1px solid ${isLocked ? "#FECACA" : "#E0E0E0"}`,
+              backgroundColor: isLocked ? "#FEF2F2" : "#F5F5F5",
+              color: isLocked ? "#DC2626" : "#555",
+              fontSize: "12px",
+              fontWeight: 500,
+              cursor: "pointer",
+              transition: "all 150ms",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = isLocked ? "#FCA5A5" : "#CCC";
+              e.currentTarget.style.color = isLocked ? "#B91C1C" : "#333";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = isLocked ? "#FECACA" : "#E0E0E0";
+              e.currentTarget.style.color = isLocked ? "#DC2626" : "#555";
+            }}
+          >
+            <span>{isLocked ? "🔒" : "🔓"}</span>
+            {isLocked ? "Unlock Entity" : "Lock Entity"}
+          </button>
+        )}
         <button
           onClick={() => { setEntity(null); setIsLocked(false); setSidebarOpen(false); }}
           style={{
-            height: "34px",
+            height: "36px",
             padding: "0 16px",
             borderRadius: "8px",
-            border: "1px solid #D8D6CF",
-            backgroundColor: "transparent",
-            color: "#999",
+            border: "1px solid #C8C5BC",
+            backgroundColor: "#DEDAD2",
+            color: "#555",
             fontSize: "12px",
+            fontWeight: 500,
             cursor: "pointer",
-            transition: "border-color 150ms, color 150ms",
+            transition: "background-color 150ms, color 150ms",
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#BBB"; e.currentTarget.style.color = "#555"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#D8D6CF"; e.currentTarget.style.color = "#999"; }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#CEC9BF"; e.currentTarget.style.color = "#222"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#DEDAD2"; e.currentTarget.style.color = "#555"; }}
         >
           Reset prototype
         </button>
