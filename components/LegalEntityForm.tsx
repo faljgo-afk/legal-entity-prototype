@@ -127,7 +127,7 @@ const LegalEntityForm = forwardRef<LegalEntityFormHandle, Props>(
     if (!street.trim()) newErrors.street = true;
     if (!city.trim()) newErrors.city = true;
     if (!postalCode.trim()) newErrors.postalCode = true;
-    if (vatEnabled && !validateVat(memberStateCode, vatNumber)) newErrors.vatNumber = true;
+    if (!isLocked && vatEnabled && !validateVat(memberStateCode, vatNumber)) newErrors.vatNumber = true;
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -223,11 +223,11 @@ const LegalEntityForm = forwardRef<LegalEntityFormHandle, Props>(
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       {/* Scrollable body */}
+      <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
       <fieldset
         disabled={isLocked}
-        style={{ border: "none", padding: 0, margin: 0, flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", opacity: isLocked ? 0.65 : 1 }}
+        style={{ border: "none", padding: 0, margin: 0, opacity: isLocked ? 0.65 : 1 }}
       >
-      <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
 
         {/* ── Company ── */}
         <section style={{ marginBottom: "20px" }}>
@@ -391,6 +391,8 @@ const LegalEntityForm = forwardRef<LegalEntityFormHandle, Props>(
           </div>
         </section>
 
+      </fieldset>
+
         {divider}
 
         {/* ── Billing Address ── */}
@@ -488,7 +490,6 @@ const LegalEntityForm = forwardRef<LegalEntityFormHandle, Props>(
           </div>
         </section>
       </div>
-      </fieldset>
 
       {/* Footer */}
       <div
@@ -500,77 +501,52 @@ const LegalEntityForm = forwardRef<LegalEntityFormHandle, Props>(
           flexShrink: 0,
         }}
       >
-        {isLocked ? (
-          <button
-            type="button"
-            onClick={onCancel}
-            style={{
-              flex: 1,
-              height: "42px",
-              borderRadius: "10px",
-              border: "none",
-              backgroundColor: "#111",
-              color: "white",
-              fontSize: "13.5px",
-              fontWeight: 500,
-              cursor: "pointer",
-              transition: "background-color 150ms",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#2A2A2A"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#111"; }}
-          >
-            Close
-          </button>
-        ) : (
-          <>
-            <button
-              type="button"
-              onClick={onCancel}
-              style={{
-                flex: 1,
-                height: "42px",
-                borderRadius: "10px",
-                border: "1px solid #E8E8E8",
-                backgroundColor: "white",
-                color: "#777",
-                fontSize: "13.5px",
-                fontWeight: 500,
-                cursor: "pointer",
-                transition: "border-color 150ms, color 150ms",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#CCC";
-                e.currentTarget.style.color = "#333";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#E8E8E8";
-                e.currentTarget.style.color = "#777";
-              }}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={handleSave}
-              style={{
-                flex: 2,
-                height: "42px",
-                borderRadius: "10px",
-                border: "none",
-                backgroundColor: "#FF622B",
-                color: "white",
-                fontSize: "13.5px",
-                fontWeight: 500,
-                cursor: "pointer",
-                transition: "background-color 150ms",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#E5551F"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#FF622B"; }}
-            >
-              Save Entity
-            </button>
-          </>
-        )}
+        <button
+          type="button"
+          onClick={onCancel}
+          style={{
+            flex: 1,
+            height: "42px",
+            borderRadius: "10px",
+            border: "1px solid #E8E8E8",
+            backgroundColor: "white",
+            color: "#777",
+            fontSize: "13.5px",
+            fontWeight: 500,
+            cursor: "pointer",
+            transition: "border-color 150ms, color 150ms",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "#CCC";
+            e.currentTarget.style.color = "#333";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "#E8E8E8";
+            e.currentTarget.style.color = "#777";
+          }}
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          onClick={handleSave}
+          style={{
+            flex: 2,
+            height: "42px",
+            borderRadius: "10px",
+            border: "none",
+            backgroundColor: "#FF622B",
+            color: "white",
+            fontSize: "13.5px",
+            fontWeight: 500,
+            cursor: "pointer",
+            transition: "background-color 150ms",
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#E5551F"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#FF622B"; }}
+        >
+          Save Entity
+        </button>
       </div>
     </div>
   );

@@ -140,7 +140,7 @@ export default function LegalEntitySidebar({ open, onClose, onSave, initialData,
           >
             <span style={{ fontSize: "16px", flexShrink: 0 }}>🔒</span>
             <p style={{ fontSize: "12.5px", color: "#92400E", margin: 0, lineHeight: "1.5" }}>
-              This entity is linked to orders and cannot be edited. Register a new account or contact support.
+              Company and tax details are locked because this entity is linked to existing orders. To change them, contact support. You can still update the billing address.
             </p>
           </div>
         )}
