@@ -223,11 +223,11 @@ const LegalEntityForm = forwardRef<LegalEntityFormHandle, Props>(
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       {/* Scrollable body */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
       <fieldset
         disabled={isLocked}
-        style={{ border: "none", padding: 0, margin: 0, opacity: isLocked ? 0.65 : 1 }}
+        style={{ border: "none", padding: 0, margin: 0, flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", opacity: isLocked ? 0.65 : 1 }}
       >
+      <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
 
         {/* ── Company ── */}
         <section style={{ marginBottom: "20px" }}>
@@ -391,8 +391,6 @@ const LegalEntityForm = forwardRef<LegalEntityFormHandle, Props>(
           </div>
         </section>
 
-      </fieldset>
-
         {divider}
 
         {/* ── Billing Address ── */}
@@ -490,6 +488,7 @@ const LegalEntityForm = forwardRef<LegalEntityFormHandle, Props>(
           </div>
         </section>
       </div>
+      </fieldset>
 
       {/* Footer */}
       <div
