@@ -500,52 +500,77 @@ const LegalEntityForm = forwardRef<LegalEntityFormHandle, Props>(
           flexShrink: 0,
         }}
       >
-        <button
-          type="button"
-          onClick={onCancel}
-          style={{
-            flex: 1,
-            height: "42px",
-            borderRadius: "10px",
-            border: "1px solid #E8E8E8",
-            backgroundColor: "white",
-            color: "#777",
-            fontSize: "13.5px",
-            fontWeight: 500,
-            cursor: "pointer",
-            transition: "border-color 150ms, color 150ms",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = "#CCC";
-            e.currentTarget.style.color = "#333";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = "#E8E8E8";
-            e.currentTarget.style.color = "#777";
-          }}
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          onClick={handleSave}
-          style={{
-            flex: 2,
-            height: "42px",
-            borderRadius: "10px",
-            border: "none",
-            backgroundColor: "#FF622B",
-            color: "white",
-            fontSize: "13.5px",
-            fontWeight: 500,
-            cursor: "pointer",
-            transition: "background-color 150ms",
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#E5551F"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#FF622B"; }}
-        >
-          Save Entity
-        </button>
+        {isLocked ? (
+          <button
+            type="button"
+            onClick={onCancel}
+            style={{
+              flex: 1,
+              height: "42px",
+              borderRadius: "10px",
+              border: "none",
+              backgroundColor: "#111",
+              color: "white",
+              fontSize: "13.5px",
+              fontWeight: 500,
+              cursor: "pointer",
+              transition: "background-color 150ms",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#2A2A2A"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#111"; }}
+          >
+            Close
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={onCancel}
+              style={{
+                flex: 1,
+                height: "42px",
+                borderRadius: "10px",
+                border: "1px solid #E8E8E8",
+                backgroundColor: "white",
+                color: "#777",
+                fontSize: "13.5px",
+                fontWeight: 500,
+                cursor: "pointer",
+                transition: "border-color 150ms, color 150ms",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#CCC";
+                e.currentTarget.style.color = "#333";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#E8E8E8";
+                e.currentTarget.style.color = "#777";
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              style={{
+                flex: 2,
+                height: "42px",
+                borderRadius: "10px",
+                border: "none",
+                backgroundColor: "#FF622B",
+                color: "white",
+                fontSize: "13.5px",
+                fontWeight: 500,
+                cursor: "pointer",
+                transition: "background-color 150ms",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#E5551F"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#FF622B"; }}
+            >
+              Save Entity
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
